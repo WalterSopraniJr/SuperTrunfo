@@ -1,5 +1,6 @@
 var carta1 = {
     nome: "Bulbassauro",
+    imagem: "https://i.pinimg.com/736x/be/d8/92/bed8924af644c9952fd653cb49b49132.jpg",
     atributos: {
       ataque: 7,
       defesa: 8,
@@ -9,6 +10,7 @@ var carta1 = {
   
   var carta2 = {
     nome: "Darth Vader",
+    imagem: "https://disneyplusbrasil.com.br/wp-content/uploads/2021/06/Darth-Vader-serie-Disney-Plus-1024x576.jpg",
     atributos: {
       ataque: 8,
       defesa: 6,
@@ -18,6 +20,7 @@ var carta1 = {
   
   var carta3 = {
     nome: "Eleven",
+    imagem: "https://i1.wp.com/mixdeseries.com.br/wp-content/uploads/2020/07/Eleven.jpg",
     atributos: {
       ataque: 6,
       defesa: 7,
@@ -43,28 +46,14 @@ var carta1 = {
     document.getElementById("btnSortear").disabled = true;
     document.getElementById("btnJogar").disabled = false;
   
-    exibirOpcoes();
-  }
-  
-  function exibirOpcoes() {
-    var opcoes = document.getElementById("opcoes");
-    var opcoesTexto = "";
-  
-    for (var atributo in cartaJogador.atributos) {
-      opcoesTexto +=
-        "<input type= 'radio' name='atributo' value=' " +
-        atributo +
-        "' >" +
-        atributo;
-    }
-    opcoes.innerHTML = opcoesTexto;
+    exibirCartaJogador()
   }
   
   function obtemAtributoSelecionado() {
     var radioAtributo = document.getElementsByName("atributos");
   
     for (var i = 0; i < radioAtributo.length; i++) {
-      if (radioAtributos[i].checked == true) {
+      if (radioAtributos[i].checked) {
         return radioAtributo[i].value;
       }
     }
@@ -72,16 +61,53 @@ var carta1 = {
   
   function jogar() {
     var atributoSelecionado = obtemAtributoSelecionado();
-    var elementoResultado = document.getElementById("resultado");
-    var valorCartaJogador = cartaJogador.atributos[atributoSelecionado];
-    var valorCartaMaquina = cartaMaquina.atributos[atributoSelecionado];
-  
-    if (valorCartaJogador > valorCartaMaquina) {
-      elementoResultado.innerHTML = "Voce venceu!";
-    } else if (valorCartaMaquina > valorCartaJogador) {
-      elementoResultado.innerHTML = "Voce perdeu ";
-    } else {
-      elementoResultado.innerHTML = "Empatou";
+    var divResultado = document.getElementById("resultado");
+    
+     if ((cartaJogador.atributos[atributoSelecionado]) > (cartaMaquina.atributos[atributoSelecionado])) {
+      htmlResultado = "<p class='resultado-final'>Voce venceu!</p>";
+    } else if (cartaMaquina.atributos[atributoSelecionado] > cartaJogador.atributos[atributoSelecionado]) {
+       htmlResultado = "<p class='resultado-final'>Voce perdeu</p>";
+    } else if (cartaMaquina.atributos[atributoSelecionado] === cartaJogador.atributos[atributoSelecionado]) {
+     htmlResultado = "<p class='resultado-final'>Empate!</p>";
     }
+    console.log(cartaJogador.atributos[atributoSelecionado])
+    divResultado.innerHTML = htmlResultado;
+    
+    document.getElementById("btnJogar").disabled = true
   }
   
+  function exibirCartaJogador() {
+    var divCartaJogador = document.getElementById("carta-jogador")
+    divCartaJogador.style.backgroundImage = `url(${cartaJogador.imagem})`
+    
+    var moldura = '<img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent-ajustado.png" style=" width: inherit; height: inherit; position: absolute;">';
+    var tagHTML = "<div id='opcoes' class='carta-status'>"
+    
+    var opcoesTexto = "";
+    for (var atributo in cartaJogador.atributos) {
+      opcoesTexto +=
+        "<input type= 'radio' name='atributo' value=' " +
+        atributo + "' >" + atributo + "" + cartaJogador.atributos[atributo] + "<br>";
+    }
+    var nome = `<p class="carta-subtitle">${cartaJogador.nome}</p>`
+    
+    divCartaJogador.innerHTML = moldura + nome + tagHTML + opcoesTexto + '</div>'
+  }
+  
+  function exibirCartaMaquina() {
+     var divCartaMaquina = document.getElementById("carta-maquina")
+    divCartaMaquina.style.backgroundImage = `url(${cartaMaquina.imagem})`
+    
+    var moldura = '<img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent-ajustado.png" style=" width: inherit; height: inherit; position: absolute;">';
+    var tagHTML = "<d id='opcoes' class='carta-status'>"
+    
+    var opcoesTexto = "";
+    for (var atributo in cartaMaquina.atributos) {
+      opcoesTexto +=
+        "<p type= 'radio' name='atributo' value=' " +
+        atributo + "' >" + atributo + "" + cartaMaquina.atributos[atributo] + "<br>";
+    }
+    var nome = `<p class="carta-subtitle">${cartaMaquina.nome}</p>`
+    
+    divCartaMaquina.innerHTML = moldura + nome + tagHTML + opcoesTexto + '<p>'
+  }
